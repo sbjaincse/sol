@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jindal Asset Management</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            width: 200px; /* Set the desired size */
+            height: 200px; /* Set the desired size */
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <img src="jam.png" alt="Forex Calculator Image">
+        <h1>Forex Pip Calculator</h1>
+
+        <label for="riskAmount">Amount to be Risked ($):</label>
+        <input type="number" id="riskAmount" placeholder="Enter amount to be risked">
+
+        <label for="currencyPair">Currency Pair:</label>
+        <select id="currencyPair">
+            <option value="AUD/CAD">AUD/CAD</option>
+            <option value="AUD/CHF">AUD/CHF</option>
+            <option value="AUD/JPY">AUD/JPY</option>
+            <option value="AUD/NZD">AUD/NZD</option>
+            <option value="AUD/USD">AUD/USD</option>
+            <option value="CAD/CHF">CAD/CHF</option>
+            <option value="CAD/JPY">CAD/JPY</option>
+            <option value="CHF/JPY">CHF/JPY</option>
+            <option value="EUR/AUD">EUR/AUD</option>
+            <option value="EUR/CAD">EUR/CAD</option>
+            <option value="EUR/CHF">EUR/CHF</option>
+            <option value="EUR/GBP">EUR/GBP</option>
+            <option value="EUR/JPY">EUR/JPY</option>
+            <option value="EUR/NZD">EUR/NZD</option>
+            <option value="EUR/USD">EUR/USD</option>
+            <option value="GBP/AUD">GBP/AUD</option>
+            <option value="GBP/CAD">GBP/CAD</option>
+            <option value="GBP/CHF">GBP/CHF</option>
+            <option value="GBP/JPY">GBP/JPY</option>
+            <option value="GBP/NZD">GBP/NZD</option>
+            <option value="GBP/USD">GBP/USD</option>
+            <option value="NZD/CAD">NZD/CAD</option>
+            <option value="NZD/CHF">NZD/CHF</option>
+            <option value="NZD/JPY">NZD/JPY</option>
+            <option value="NZD/USD">NZD/USD</option>
+            <option value="USD/CAD">USD/CAD</option>
+            <option value="USD/CHF">USD/CHF</option>
+            <option value="USD/JPY">USD/JPY</option>
+            <option value="XAU/USD">XAU/USD</option>
+            <!-- Add more currency pairs as needed -->
+        </select>
+
+        <label for="stopLoss">Stop Loss Size (pips):</label>
+        <input type="number" id="stopLoss" placeholder="Enter stop loss size in pips">
+
+        <button onclick="calculateLotSize()">Calculate Lot Size</button>
+
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function calculateLotSize() {
+            var riskAmount = document.getElementById('riskAmount').value;
+            var currencyPair = document.getElementById('currencyPair').value;
+            var stopLoss = document.getElementById('stopLoss').value;
+
+            // Retrieve pip value based on the currency pair
+            var pipValue = getPipValue(currencyPair);
+
+            // Perform the lot size calculation
+            var lotSize = riskAmount / (stopLoss * pipValue);
+
+            // Display the result
+            document.getElementById('result').innerHTML = "For " + currencyPair + ", your lot size should be: " + lotSize.toFixed(2) + " lots.";
+        }
+
+        function getPipValue(currencyPair) {
+            // Use a lookup table for accurate pip values for each currency pair
+            var pipValues = {
+                'AUD/CAD': 7.43,
+                'AUD/CHF': 11.69,
+                'AUD/JPY': 6.85,
+                'AUD/NZD': 6.19,
+                'AUD/USD': 10,
+                'CAD/CHF': 11.69,
+                'CAD/JPY': 6.85,
+                'CHF/JPY': 6.85,
+                'EUR/AUD': 6.65,
+                'EUR/CAD': 7.43,
+                'EUR/CHF': 11.69,
+                'EUR/GBP': 12.73,
+                'EUR/JPY': 6.85,
+                'EUR/NZD': 6.19,
+                'EUR/USD': 10,
+                'GBP/AUD': 6.65,
+                'GBP/CAD': 7.43,
+                'GBP/CHF': 11.69,
+                'GBP/JPY': 6.85,
+                'GBP/NZD': 6.19,
+                'GBP/USD': 10,
+                'NZD/CAD': 7.43,
+                'NZD/CHF': 11.69,
+                'NZD/JPY': 6.85,
+                'NZD/USD': 10,
+                'USD/CAD': 7.43,
+                'USD/CHF': 11.69,
+                'USD/JPY': 6.85,
+                'XAU/USD': 100,
+
+                // Add more pairs as needed
+            };
+
+            // Default to a standard pip value if the pair is not found
+            return pipValues[currencyPair] || 10;
+        }
+    </script>
+
+</body>
+</html>
